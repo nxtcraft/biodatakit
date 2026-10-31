@@ -402,11 +402,12 @@ function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/
 function renderClassic() {
   const name = v('f_name') || 'Your Name';
   const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  const occ = v('f_occ');
   return `
   <div class="bd-header">
     ${photo}
     <div class="bd-name">${escH(name)}</div>
-    <div class="bd-subtitle">Marriage Biodata</div>
+    <div class="bd-subtitle">${occ ? escH(occ) + ' · ' : ''}Marriage Biodata</div>
   </div>
   <div class="bd-body">
     <div class="bd-section">
@@ -468,7 +469,7 @@ function renderModern() {
     ${photo}
     <div class="bd-header-info">
       <div class="bd-name">${escH(name)}</div>
-      <div class="bd-subtitle">Marriage Biodata${v('f_city') ? ' · ' + escH(v('f_city')) : ''}</div>
+      <div class="bd-subtitle">${v('f_occ') ? escH(v('f_occ')) + ' · ' : ''}Marriage Biodata${v('f_city') ? ' · ' + escH(v('f_city')) : ''}</div>
     </div>
   </div>
   <div class="bd-body">
@@ -524,11 +525,12 @@ function renderSimple() {
 
   function tRow(k, val) { return val ? `<tr><td>${k}</td><td>${escH(val)}</td></tr>` : ''; }
 
+  const occ = v('f_occ');
   return `
   <div class="bd-header">
     ${photo}
     <div class="bd-name">${escH(name)}</div>
-    <div class="bd-subtitle">Marriage Biodata</div>
+    <div class="bd-subtitle">${occ ? escH(occ) + ' · ' : ''}Marriage Biodata</div>
   </div>
   <table>
     <tr><th colspan="2">Personal Details</th></tr>
