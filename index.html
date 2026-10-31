@@ -295,6 +295,11 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
     </div>
     <div class="field-row full"><div class="field"><label>Email</label><input type="text" id="f_email" placeholder="e.g. priya.sharma@email.com" oninput="update()"></div></div>
 
+    <div class="section-head">Additional Custom Details</div>
+    <p style="font-size:11px; color:#888; margin-bottom:8px; line-height:1.5;">Add any extra fields — Awards, Languages, Achievements, Reference, etc.</p>
+    <div id="custom-fields-list"></div>
+    <button onclick="addCustomField()" style="width:100%; padding:8px; background:white; border:1.5px dashed #ce93d8; border-radius:8px; color:#9c27b0; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:10px;">+ Add Custom Field</button>
+
     <button class="btn-dl" onclick="window.print()">⬇️ Download as PDF</button>
     <p style="font-size:11px; color:#999; text-align:center; margin-top:8px;">In the print dialog, select "Save as PDF" and A4 paper size</p>
   </div>
@@ -369,6 +374,45 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
 <script>
 let currentTpl = 'classic';
 let photoData = '';
+let customFields = [];
+
+function addCustomField() {
+  const idx = customFields.length;
+  customFields.push({ label: '', value: '' });
+  const list = document.getElementById('custom-fields-list');
+  const div = document.createElement('div');
+  div.className = 'field-row';
+  div.id = 'cf-row-' + idx;
+  div.style.cssText = 'display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:end;';
+  div.innerHTML = `
+    <div class="field"><label>Label</label><input type="text" placeholder="e.g. Languages Known" oninput="updateCF(${idx},'label',this.value)"></div>
+    <div class="field"><label>Value</label><input type="text" placeholder="e.g. Hindi, English" oninput="updateCF(${idx},'value',this.value)"></div>
+    <button onclick="removeCF(${idx})" style="padding:7px 10px; background:#fff; border:1px solid #ddd; border-radius:7px; cursor:pointer; font-size:14px; margin-bottom:1px;">🗑</button>`;
+  list.appendChild(div);
+}
+
+function updateCF(idx, key, val) {
+  customFields[idx][key] = val;
+  update();
+}
+
+function removeCF(idx) {
+  customFields[idx] = null;
+  const el = document.getElementById('cf-row-' + idx);
+  if (el) el.remove();
+  update();
+}
+
+function getCustomRows(rowFn) {
+  return customFields.filter(Boolean).filter(f => f.label || f.value).map(f => rowFn(f.label, f.value)).join('');
+}
+
+function getCustomTable() {
+  const rows = customFields.filter(Boolean).filter(f => f.label || f.value);
+  if (!rows.length) return '';
+  return `<tr><th colspan="2">Additional Details</th></tr>` +
+    rows.map(f => `<tr><td>${escH(f.label)}</td><td>${escH(f.value)}</td></tr>`).join('');
+}
 
 function setTemplate(tpl) {
   currentTpl = tpl;
@@ -457,6 +501,7 @@ function renderClassic() {
       ${row('Phone', v('f_phone'))}
       ${row('Email', v('f_email'))}
     </div>
+    ${getCustomRows(row).trim() ? `<div class="bd-section full"><div class="bd-section-title">Additional Details</div>${getCustomRows(row)}</div>` : ''}
   </div>
   <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
 }
@@ -515,6 +560,7 @@ function renderModern() {
       <div class="bd-section-title">📞 Contact</div>
       ${row('Contact', v('f_cname'))} ${row('Phone', v('f_phone'))} ${row('Email', v('f_email'))}
     </div>
+    ${getCustomRows(row).trim() ? `<div class="bd-section full"><div class="bd-section-title">✨ Additional Details</div>${getCustomRows(row)}</div>` : ''}
   </div>
   <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
 }
@@ -565,6 +611,7 @@ function renderSimple() {
     ${tRow('Contact Person', v('f_cname'))}
     ${tRow('Phone', v('f_phone'))}
     ${tRow('Email', v('f_email'))}
+    ${getCustomTable()}
   </table>
   <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
 }
