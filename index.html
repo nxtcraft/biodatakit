@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-XXXXXXXXXX");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marriage Biodata Maker — Free Biodata Format Generator | BiodataKit</title>
@@ -177,7 +180,8 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
 <div class="site-header">
   <div class="logo">Biodata<span>Kit</span></div>
   <div class="tagline">Free marriage biodata maker — fill, preview, download PDF</div>
-  <a href="guide/" style="margin-left:auto;font-size:12px;color:rgba(255,255,255,.85);text-decoration:none;white-space:nowrap;">📖 How to use</a>
+  <span id="bd-saved" style="font-size:11px;color:rgba(255,255,255,.9);background:rgba(255,255,255,.2);padding:3px 10px;border-radius:20px;opacity:0;transition:opacity .4s;font-weight:600;white-space:nowrap;">✓ Saved</span>
+  <a href="guide/" style="margin-left:8px;font-size:12px;color:rgba(255,255,255,.85);text-decoration:none;white-space:nowrap;">📖 How to use</a>
 </div>
 
 <div class="page-wrap">
@@ -376,6 +380,49 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
 let currentTpl = 'classic';
 let photoData = '';
 let customFields = [];
+
+// ── PERSISTENCE ──
+const BD_FIELDS = ['f_name','f_dob','f_age','f_height','f_weight','f_complexion','f_blood','f_pob','f_native','f_city','f_religion','f_caste','f_gotra','f_manglik','f_edu','f_occ','f_emp','f_income','f_father','f_focc','f_mother','f_mocc','f_siblings','f_diet','f_habits','f_hobbies','f_pref','f_phone','f_email','f_page','f_cname'];
+
+let _bdSaveTimer;
+function bdAutosave() {
+  clearTimeout(_bdSaveTimer);
+  _bdSaveTimer = setTimeout(() => {
+    try {
+      const data = {};
+      BD_FIELDS.forEach(id => { const el = document.getElementById(id); if (el) data[id] = el.value; });
+      data._tpl = currentTpl;
+      data._cf = customFields;
+      localStorage.setItem('bd_draft', JSON.stringify(data));
+      const ind = document.getElementById('bd-saved');
+      if (ind) { ind.style.opacity='1'; setTimeout(()=>{ ind.style.opacity='0'; }, 2000); }
+    } catch(e) {}
+  }, 400);
+}
+
+function bdLoadDraft() {
+  try {
+    const raw = localStorage.getItem('bd_draft');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    BD_FIELDS.forEach(id => { const el = document.getElementById(id); if (el && data[id] !== undefined) el.value = data[id]; });
+    if (data._tpl) setTemplate(data._tpl);
+    if (data._cf?.length) {
+      data._cf.filter(Boolean).forEach(cf => {
+        const idx = customFields.length;
+        customFields.push({ label: cf.label || '', value: cf.value || '' });
+        const list = document.getElementById('custom-fields-list');
+        const div = document.createElement('div');
+        div.className = 'field-row';
+        div.id = 'cf-row-' + idx;
+        div.style.cssText = 'display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:end;';
+        div.innerHTML = `<div class="field"><label>Label</label><input type="text" placeholder="e.g. Languages Known" value="${cf.label||''}" oninput="updateCF(${idx},'label',this.value)"></div><div class="field"><label>Value</label><input type="text" placeholder="e.g. Hindi, English" value="${cf.value||''}" oninput="updateCF(${idx},'value',this.value)"></div><button onclick="removeCF(${idx})" style="padding:7px 10px; background:#fff; border:1px solid #ddd; border-radius:7px; cursor:pointer; font-size:14px; margin-bottom:1px;">🗑</button>`;
+        list.appendChild(div);
+      });
+    }
+    update();
+  } catch(e) {}
+}
 
 function addCustomField() {
   const idx = customFields.length;
@@ -623,8 +670,10 @@ function update() {
   page.innerHTML = currentTpl === 'classic' ? renderClassic()
     : currentTpl === 'modern' ? renderModern()
     : renderSimple();
+  bdAutosave();
 }
 
+bdLoadDraft();
 update();
 </script>
 </body>
