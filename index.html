@@ -122,12 +122,12 @@ body { font-family: 'Inter', sans-serif; background: #fdf4ff; color: var(--text)
 .tpl-classic .bd-footer { text-align: center; margin-top: 16px; padding-top: 10px; border-top: 1px solid #e1bee7; font-size: 11px; color: #aaa; }
 
 /* Template 2 — Modern */
-.tpl-modern .bd-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg,#7b1fa2,#9c27b0); color: white; padding: 20px 24px; border-radius: 10px; margin-bottom: 20px; }
+.tpl-modern .bd-header { display: flex; align-items: center; gap: 20px; background: white; border-bottom: 3px solid #9c27b0; padding: 16px 0 18px; margin-bottom: 20px; }
 .tpl-modern .bd-header-info { flex: 1; }
-.tpl-modern .bd-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.tpl-modern .bd-subtitle { font-size: 12px; opacity: 0.85; }
-.tpl-modern .bd-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.4); flex-shrink: 0; }
-.tpl-modern .bd-photo-placeholder { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.tpl-modern .bd-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #9c27b0; margin-bottom: 4px; }
+.tpl-modern .bd-subtitle { font-size: 12px; color: #666; }
+.tpl-modern .bd-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #9c27b0; flex-shrink: 0; }
+.tpl-modern .bd-photo-placeholder { width: 80px; height: 80px; border-radius: 50%; background: #f3e5f5; border: 3px solid #9c27b0; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
 .tpl-modern .bd-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
 .tpl-modern .bd-section { margin-bottom: 14px; }
 .tpl-modern .bd-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #9c27b0; display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
@@ -197,7 +197,14 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
     <div class="section-head">Choose Colour</div>
     <div id="bd-colorRow" style="display:flex;flex-wrap:wrap;gap:10px;padding:6px 2px 10px;"></div>
 
-    <div class="section-head">Photo</div>
+    <div class="section-head">Photo <span style="font-weight:400;font-size:11px;color:#999;">(optional)</span></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;color:#444;">
+        <input type="checkbox" id="photo-show" checked onchange="togglePhoto()" style="accent-color:var(--accent);width:15px;height:15px;">
+        Show photo in biodata
+      </label>
+    </div>
+    <div id="photo-upload-section">
     <div class="photo-upload">
       <div class="photo-circle" id="photo-circle" onclick="document.getElementById('photo-file').click()">
         <span id="photo-placeholder">👤</span>
@@ -206,8 +213,18 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
       </div>
       <div class="photo-info">
         <strong onclick="document.getElementById('photo-file').click()">Upload Photo</strong><br>
-        JPG/PNG · Appears in preview
+        JPG/PNG · Appears in preview<br>
+        <span style="font-size:11px;color:#999;">Click to change · Leave blank for text-only</span>
       </div>
+    </div>
+    <div style="margin-top:6px;">
+      <label style="font-size:12px;color:#666;font-weight:600;display:block;margin-bottom:4px;">Photo Size</label>
+      <select id="photo-size" onchange="update()" style="width:100%;padding:6px 8px;border:1px solid #e1bee7;border-radius:7px;font-size:12px;color:#444;">
+        <option value="medium">Medium (standard)</option>
+        <option value="small">Small (compact)</option>
+        <option value="large">Large (prominent)</option>
+      </select>
+    </div>
     </div>
 
     <div class="section-head">Personal Details</div>
@@ -434,6 +451,8 @@ function bdAutosave() {
       data._tpl = currentTpl;
       data._color = currentColor;
       data._cf = customFields;
+      data._photoShow = document.getElementById('photo-show')?.checked !== false;
+      data._photoSize = document.getElementById('photo-size')?.value || 'medium';
       localStorage.setItem('bd_draft', JSON.stringify(data));
       const ind = document.getElementById('bd-saved');
       if (ind) { ind.style.opacity='1'; setTimeout(()=>{ ind.style.opacity='0'; }, 2000); }
@@ -449,6 +468,8 @@ function bdLoadDraft() {
     BD_FIELDS.forEach(id => { const el = document.getElementById(id); if (el && data[id] !== undefined) el.value = data[id]; });
     if (data._tpl) { currentTpl = data._tpl; document.querySelectorAll('.tpl-btn').forEach(b => b.classList.toggle('active', b.dataset.tpl === data._tpl)); }
     if (data._color) { currentColor = data._color; }
+    if (data._photoShow === false) { const cb = document.getElementById('photo-show'); if (cb) { cb.checked = false; togglePhoto(); } }
+    if (data._photoSize) { const sel = document.getElementById('photo-size'); if (sel) sel.value = data._photoSize; }
     if (data._cf?.length) {
       data._cf.filter(Boolean).forEach(cf => {
         const idx = customFields.length;
@@ -510,6 +531,12 @@ function setTemplate(tpl) {
   update();
 }
 
+function togglePhoto() {
+  const show = document.getElementById('photo-show').checked;
+  document.getElementById('photo-upload-section').style.display = show ? '' : 'none';
+  update();
+}
+
 function handlePhoto(input) {
   const file = input.files[0];
   if (!file) return;
@@ -524,6 +551,18 @@ function handlePhoto(input) {
   reader.readAsDataURL(file);
 }
 
+function photoSizeCSS() {
+  const sz = (document.getElementById('photo-size')?.value) || 'medium';
+  const sizes = { small: '60px', medium: '90px', large: '120px' };
+  const s = sizes[sz] || '90px';
+  const h = sz === 'small' ? '75px' : sz === 'large' ? '150px' : '110px';
+  return `<style>
+    .tpl-classic .bd-photo, .tpl-classic .bd-photo-placeholder { width:${s} !important; height:${h} !important; }
+    .tpl-simple .bd-photo, .tpl-simple .bd-photo-placeholder { width:${s} !important; height:${h} !important; }
+    .tpl-modern .bd-photo, .tpl-modern .bd-photo-placeholder { width:${s} !important; height:${s} !important; }
+  </style>`;
+}
+
 function v(id) { return (document.getElementById(id).value || '').trim(); }
 
 function row(key, val) {
@@ -533,9 +572,9 @@ function row(key, val) {
 
 function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function renderClassic() {
+function renderClassic(showPhoto=true) {
   const name = v('f_name') || 'Your Name';
-  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  const photo = showPhoto ? (photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>') : '';
   const occ = v('f_occ');
   return `
   <div class="bd-header">
@@ -596,9 +635,9 @@ function renderClassic() {
   <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
 }
 
-function renderModern() {
+function renderModern(showPhoto=true) {
   const name = v('f_name') || 'Your Name';
-  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  const photo = showPhoto ? (photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>') : '';
   return `
   <div class="bd-header">
     ${photo}
@@ -655,9 +694,9 @@ function renderModern() {
   <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
 }
 
-function renderSimple() {
+function renderSimple(showPhoto=true) {
   const name = v('f_name') || 'Your Name';
-  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  const photo = showPhoto ? (photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>') : '';
 
   function tRow(k, val) { return val ? `<tr><td>${k}</td><td>${escH(val)}</td></tr>` : ''; }
 
@@ -710,19 +749,21 @@ function update() {
   const page = document.getElementById('preview-page');
   page.className = 'preview-page tpl-' + currentTpl;
   const c = currentColor;
-  const dark = c + 'dd';
   const colorCSS = `<style>
-    .bd-section-title { color: ${c} !important; border-color: ${c}44 !important; }
+    .bd-section-title { color: ${c} !important; border-color: ${c}55 !important; }
     .bd-name { color: ${c} !important; }
-    .bd-subtitle { color: ${c}bb !important; }
-    .bd-header { background: linear-gradient(135deg, ${dark}, ${c}) !important; }
-    table th { background: ${c} !important; }
-    .bd-stripe { background: ${c} !important; }
+    .bd-subtitle { color: ${c}99 !important; }
+    table th { background: ${c}18 !important; color: ${c} !important; border-left: 3px solid ${c} !important; }
+    .tpl-modern .bd-header { border-bottom-color: ${c} !important; }
+    .tpl-modern .bd-photo, .tpl-modern .bd-photo-placeholder { border-color: ${c} !important; }
+    .tpl-classic .bd-header { border-bottom-color: ${c} !important; }
+    .tpl-simple .bd-header { border-bottom-color: ${c} !important; }
   </style>`;
-  const html = currentTpl === 'classic' ? renderClassic()
-    : currentTpl === 'modern' ? renderModern()
-    : renderSimple();
-  page.innerHTML = colorCSS + html;
+  const showPhoto = document.getElementById('photo-show')?.checked !== false;
+  const html = currentTpl === 'classic' ? renderClassic(showPhoto)
+    : currentTpl === 'modern' ? renderModern(showPhoto)
+    : renderSimple(showPhoto);
+  page.innerHTML = colorCSS + photoSizeCSS() + html;
   buildColorRow();
   bdAutosave();
 }
