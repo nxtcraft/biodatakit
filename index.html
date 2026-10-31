@@ -302,7 +302,10 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
   <!-- PREVIEW PANEL -->
   <div class="preview-panel" id="preview-panel">
     <div class="preview-wrap">
-      <div class="preview-label">Live Preview · Click "Download as PDF" to save</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <div class="preview-label" style="margin:0;">Live Preview</div>
+        <button onclick="window.print()" style="padding:7px 16px; background:#9c27b0; color:white; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer;">⬇️ Download PDF</button>
+      </div>
       <div class="preview-page tpl-classic" id="preview-page">
         <!-- filled by JS -->
       </div>
