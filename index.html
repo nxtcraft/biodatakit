@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Biodata Maker — Free Biodata Format Generator | BiodataKit</title>
+<meta name="description" content="Create a professional marriage biodata free. Fill the form, preview instantly, download as PDF. Choose from 3 templates. No signup, no watermark.">
+<meta name="keywords" content="marriage biodata maker, biodata format for marriage, matrimonial biodata, biodata template free, marriage biodata pdf download, shaadi biodata format, hindu marriage biodata, biodata format in english">
+<link rel="canonical" href="https://nxtcraft.github.io/biodatakit/">
+<meta property="og:title" content="Marriage Biodata Maker — Free Biodata Format Generator">
+<meta property="og:description" content="Create a professional marriage biodata free. Fill the form, preview instantly, download as PDF. 3 templates, no signup.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nxtcraft.github.io/biodatakit/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "BiodataKit — Marriage Biodata Maker",
+  "url": "https://nxtcraft.github.io/biodatakit/",
+  "description": "Free marriage biodata maker. Fill the form, choose a template, download as PDF instantly.",
+  "applicationCategory": "UtilitiesApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should be included in a marriage biodata?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A marriage biodata should include: personal details (name, date of birth, height, complexion, blood group), religion and caste details (religion, caste, sub-caste, gotra, manglik status if applicable), education and career (highest qualification, occupation, employer, income), family background (father's name and occupation, mother's name, siblings), hobbies and interests, partner preferences, and contact details. A recent photo is recommended." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a marriage biodata the same as a matrimonial profile?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A biodata is a printed/PDF document shared directly with families, while a matrimonial profile is an online listing on sites like Shaadi.com or Jeevansathi. Both contain similar information but biodata is more traditional and used for offline introductions and family meetings. Biodata is still widely used in India for initial introductions." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I download my biodata as PDF?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Fill in your details on the left panel. The preview updates live on the right. When ready, click 'Download PDF' — your browser will open the print dialog. Select 'Save as PDF' as the destination. Choose A4 paper size. The biodata is formatted to fit one page." }
+    }
+  ]
+}
+</script>
+<style>
+:root {
+  --accent: #9c27b0;
+  --accent2: #7b1fa2;
+  --light: #f3e5f5;
+  --border: #e1bee7;
+  --text: #1a1a2e;
+  --muted: #6a1b9a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #fdf4ff; color: var(--text); }
+
+.site-header { background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%); color: white; padding: 14px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.logo { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+.logo span { opacity: 0.75; }
+.tagline { font-size: 13px; opacity: 0.85; }
+
+.page-wrap { display: grid; grid-template-columns: 420px 1fr; gap: 0; min-height: calc(100vh - 60px); }
+
+/* Form panel */
+.form-panel { padding: 20px; background: white; border-right: 1px solid var(--border); overflow-y: auto; max-height: calc(100vh - 60px); }
+.section-head { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); background: var(--light); padding: 7px 12px; border-radius: 6px; margin: 18px 0 10px; }
+.section-head:first-child { margin-top: 0; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+.field-row.full { grid-template-columns: 1fr; }
+.field { display: flex; flex-direction: column; gap: 3px; }
+.field label { font-size: 11px; font-weight: 600; color: #555; }
+.field input, .field select, .field textarea {
+  border: 1px solid #ddd; border-radius: 7px; padding: 7px 10px; font-size: 13px;
+  font-family: 'Inter', sans-serif; width: 100%; transition: border .15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+.field textarea { min-height: 56px; resize: vertical; }
+
+.photo-upload { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.photo-circle { width: 68px; height: 68px; border-radius: 50%; background: var(--light); border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; overflow: hidden; cursor: pointer; flex-shrink: 0; }
+.photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+.photo-circle input { display: none; }
+.photo-info { font-size: 12px; color: #666; }
+.photo-info strong { color: var(--accent); cursor: pointer; }
+
+.template-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.tpl-btn { flex: 1; padding: 8px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; cursor: pointer; font-size: 12px; font-weight: 600; color: #666; transition: all .15s; text-align: center; }
+.tpl-btn:hover, .tpl-btn.active { border-color: var(--accent); color: var(--accent); background: var(--light); }
+
+.btn-dl { width: 100%; padding: 13px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 18px; transition: background .15s; }
+.btn-dl:hover { background: var(--accent2); }
+
+/* Preview panel */
+.preview-panel { background: #f0e6f6; display: flex; flex-direction: column; align-items: center; padding: 24px; overflow-y: auto; max-height: calc(100vh - 60px); }
+.preview-wrap { width: 100%; max-width: 620px; }
+.preview-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 10px; text-align: center; }
+.preview-page { background: white; border-radius: 4px; box-shadow: 0 4px 24px rgba(124,0,180,.12); padding: 36px 40px; min-height: 720px; }
+
+/* Template 1 — Classic */
+.tpl-classic .bd-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #7b1fa2; padding-bottom: 16px; }
+.tpl-classic .bd-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: #4a0072; }
+.tpl-classic .bd-subtitle { font-size: 13px; color: #6a1b9a; margin-top: 4px; }
+.tpl-classic .bd-photo { width: 90px; height: 110px; border-radius: 6px; object-fit: cover; border: 2px solid #ce93d8; margin: 0 auto 10px; display: block; }
+.tpl-classic .bd-photo-placeholder { width: 90px; height: 110px; background: #f3e5f5; border: 2px dashed #ce93d8; border-radius: 6px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.tpl-classic .bd-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.tpl-classic .bd-section { margin-bottom: 16px; }
+.tpl-classic .bd-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #9c27b0; border-bottom: 1px solid #e1bee7; padding-bottom: 4px; margin-bottom: 8px; }
+.tpl-classic .bd-row { display: flex; font-size: 12.5px; line-height: 1.9; }
+.tpl-classic .bd-key { color: #555; min-width: 110px; flex-shrink: 0; }
+.tpl-classic .bd-val { color: #1a1a2e; font-weight: 500; }
+.tpl-classic .bd-section.full { grid-column: 1/-1; }
+.tpl-classic .bd-footer { text-align: center; margin-top: 16px; padding-top: 10px; border-top: 1px solid #e1bee7; font-size: 11px; color: #aaa; }
+
+/* Template 2 — Modern */
+.tpl-modern .bd-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg,#7b1fa2,#9c27b0); color: white; padding: 20px 24px; border-radius: 10px; margin-bottom: 20px; }
+.tpl-modern .bd-header-info { flex: 1; }
+.tpl-modern .bd-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.tpl-modern .bd-subtitle { font-size: 12px; opacity: 0.85; }
+.tpl-modern .bd-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.4); flex-shrink: 0; }
+.tpl-modern .bd-photo-placeholder { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.tpl-modern .bd-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.tpl-modern .bd-section { margin-bottom: 14px; }
+.tpl-modern .bd-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #9c27b0; display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
+.tpl-modern .bd-row { font-size: 12px; line-height: 1.9; display: flex; }
+.tpl-modern .bd-key { color: #666; min-width: 108px; flex-shrink: 0; }
+.tpl-modern .bd-val { color: #1a1a2e; font-weight: 500; }
+.tpl-modern .bd-section.full { grid-column: 1/-1; }
+.tpl-modern .bd-footer { text-align: center; margin-top: 12px; font-size: 11px; color: #bbb; }
+
+/* Template 3 — Simple */
+.tpl-simple .bd-header { text-align: center; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 3px double #9c27b0; }
+.tpl-simple .bd-photo { width: 85px; height: 105px; border-radius: 4px; object-fit: cover; border: 1px solid #ccc; margin: 0 auto 10px; display: block; }
+.tpl-simple .bd-photo-placeholder { width: 85px; height: 105px; background: #f5f5f5; border: 1px solid #ccc; border-radius: 4px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.tpl-simple .bd-name { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+.tpl-simple .bd-subtitle { font-size: 12px; color: #555; margin-top: 3px; }
+.tpl-simple table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 14px; }
+.tpl-simple th { text-align: left; background: #f3e5f5; color: #7b1fa2; padding: 5px 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; }
+.tpl-simple td { padding: 5px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: top; }
+.tpl-simple td:first-child { color: #555; width: 42%; }
+.tpl-simple td:last-child { font-weight: 500; color: #1a1a2e; }
+.tpl-simple .bd-footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 10px; }
+
+/* Print */
+@media print {
+  .site-header, .form-panel, .preview-label, .btn-dl, footer, .seo-section { display: none !important; }
+  body { background: white; }
+  .page-wrap { display: block; }
+  .preview-panel { padding: 0; background: white; max-height: none; }
+  .preview-page { box-shadow: none; padding: 20px; }
+}
+
+/* SEO section */
+.seo-section { max-width: 900px; margin: 40px auto; padding: 0 20px 40px; }
+.seo-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.seo-section h3 { font-size: 16px; font-weight: 700; margin: 18px 0 8px; }
+.seo-section p, .seo-section li { font-size: 14px; color: #333; line-height: 1.7; }
+.seo-section ul, .seo-section ol { padding-left: 22px; margin-bottom: 10px; }
+details { border: 1px solid #e1bee7; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+details summary { padding: 12px 14px; cursor: pointer; font-weight: 600; font-size: 14px; color: #1a1a2e; }
+details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .form-panel { max-height: none; overflow-y: visible; }
+  .preview-panel { max-height: none; }
+}
+</style>
+</head>
+<body>
+<div class="site-header">
+  <div class="logo">Biodata<span>Kit</span></div>
+  <div class="tagline">Free marriage biodata maker — fill, preview, download PDF</div>
+</div>
+
+<div class="page-wrap">
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+    <div class="section-head">Choose Template</div>
+    <div class="template-row">
+      <button class="tpl-btn active" data-tpl="classic" onclick="setTemplate('classic')">🌸 Classic</button>
+      <button class="tpl-btn" data-tpl="modern" onclick="setTemplate('modern')">✨ Modern</button>
+      <button class="tpl-btn" data-tpl="simple" onclick="setTemplate('simple')">📄 Simple</button>
+    </div>
+
+    <div class="section-head">Photo</div>
+    <div class="photo-upload">
+      <div class="photo-circle" id="photo-circle" onclick="document.getElementById('photo-file').click()">
+        <span id="photo-placeholder">👤</span>
+        <img id="photo-img" style="display:none;" alt="Photo">
+        <input type="file" id="photo-file" accept="image/*" onchange="handlePhoto(this)">
+      </div>
+      <div class="photo-info">
+        <strong onclick="document.getElementById('photo-file').click()">Upload Photo</strong><br>
+        JPG/PNG · Appears in preview
+      </div>
+    </div>
+
+    <div class="section-head">Personal Details</div>
+    <div class="field-row full"><div class="field"><label>Full Name *</label><input type="text" id="f_name" placeholder="e.g. Priya Sharma" oninput="update()"></div></div>
+    <div class="field-row">
+      <div class="field"><label>Date of Birth</label><input type="text" id="f_dob" placeholder="e.g. 15 May 1998" oninput="update()"></div>
+      <div class="field"><label>Age</label><input type="text" id="f_age" placeholder="e.g. 26 years" oninput="update()"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Height</label><input type="text" id="f_height" placeholder="e.g. 5'4&quot;" oninput="update()"></div>
+      <div class="field"><label>Weight</label><input type="text" id="f_weight" placeholder="e.g. 55 kg" oninput="update()"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Complexion</label>
+        <select id="f_complexion" onchange="update()">
+          <option value="">Select</option>
+          <option>Fair</option><option>Wheatish</option><option>Wheatish Brown</option><option>Dark</option>
+        </select>
+      </div>
+      <div class="field"><label>Blood Group</label>
+        <select id="f_blood" onchange="update()">
+          <option value="">Select</option>
+          <option>A+</option><option>A−</option><option>B+</option><option>B−</option>
+          <option>O+</option><option>O−</option><option>AB+</option><option>AB−</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Place of Birth</label><input type="text" id="f_pob" placeholder="e.g. Delhi" oninput="update()"></div>
+      <div class="field"><label>Native Place</label><input type="text" id="f_native" placeholder="e.g. Jaipur, Rajasthan" oninput="update()"></div>
+    </div>
+
+    <div class="section-head">Religion & Caste</div>
+    <div class="field-row">
+      <div class="field"><label>Religion</label><input type="text" id="f_religion" placeholder="e.g. Hindu" oninput="update()"></div>
+      <div class="field"><label>Caste</label><input type="text" id="f_caste" placeholder="e.g. Brahmin" oninput="update()"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Sub-caste / Gotra</label><input type="text" id="f_gotra" placeholder="e.g. Vashisht" oninput="update()"></div>
+      <div class="field"><label>Manglik</label>
+        <select id="f_manglik" onchange="update()">
+          <option value="">Select</option>
+          <option>Non-Manglik</option><option>Manglik</option><option>Partial Manglik</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-head">Education & Career</div>
+    <div class="field-row full"><div class="field"><label>Highest Qualification</label><input type="text" id="f_edu" placeholder="e.g. B.Tech, Computer Science" oninput="update()"></div></div>
+    <div class="field-row">
+      <div class="field"><label>Occupation</label><input type="text" id="f_occ" placeholder="e.g. Software Engineer" oninput="update()"></div>
+      <div class="field"><label>Employer / Company</label><input type="text" id="f_emp" placeholder="e.g. TCS, Infosys" oninput="update()"></div>
+    </div>
+    <div class="field-row full"><div class="field"><label>Annual Income</label><input type="text" id="f_income" placeholder="e.g. ₹8 LPA" oninput="update()"></div></div>
+
+    <div class="section-head">Family Details</div>
+    <div class="field-row">
+      <div class="field"><label>Father's Name</label><input type="text" id="f_father" placeholder="e.g. Rajesh Sharma" oninput="update()"></div>
+      <div class="field"><label>Father's Occupation</label><input type="text" id="f_focc" placeholder="e.g. Retired Officer" oninput="update()"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Mother's Name</label><input type="text" id="f_mother" placeholder="e.g. Sunita Sharma" oninput="update()"></div>
+      <div class="field"><label>Mother's Occupation</label><input type="text" id="f_mocc" placeholder="e.g. Homemaker" oninput="update()"></div>
+    </div>
+    <div class="field-row full"><div class="field"><label>Siblings</label><input type="text" id="f_siblings" placeholder="e.g. 1 Elder Brother (Married), 1 Younger Sister" oninput="update()"></div></div>
+
+    <div class="section-head">Lifestyle & Interests</div>
+    <div class="field-row">
+      <div class="field"><label>Diet</label>
+        <select id="f_diet" onchange="update()">
+          <option value="">Select</option>
+          <option>Vegetarian</option><option>Non-Vegetarian</option><option>Occasionally Non-Veg</option><option>Jain</option>
+        </select>
+      </div>
+      <div class="field"><label>Smoking / Drinking</label>
+        <select id="f_habits" onchange="update()">
+          <option value="">Select</option>
+          <option>No / No</option><option>No / Occasionally</option><option>No / Yes</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row full"><div class="field"><label>Hobbies & Interests</label><input type="text" id="f_hobbies" placeholder="e.g. Reading, Cooking, Travelling" oninput="update()"></div></div>
+
+    <div class="section-head">Partner Expectations</div>
+    <div class="field-row full"><div class="field"><label>Age Range</label><input type="text" id="f_page" placeholder="e.g. 28–34 years" oninput="update()"></div></div>
+    <div class="field-row full"><div class="field"><label>Other Expectations</label><textarea id="f_pref" placeholder="e.g. Well-educated, family-oriented, working or homemaker both fine..." oninput="update()"></textarea></div></div>
+
+    <div class="section-head">Contact Details</div>
+    <div class="field-row full"><div class="field"><label>Current City</label><input type="text" id="f_city" placeholder="e.g. Bengaluru, Karnataka" oninput="update()"></div></div>
+    <div class="field-row">
+      <div class="field"><label>Contact Name</label><input type="text" id="f_cname" placeholder="e.g. Rajesh Sharma (Father)" oninput="update()"></div>
+      <div class="field"><label>Phone</label><input type="text" id="f_phone" placeholder="e.g. +91 98765 43210" oninput="update()"></div>
+    </div>
+    <div class="field-row full"><div class="field"><label>Email</label><input type="text" id="f_email" placeholder="e.g. priya.sharma@email.com" oninput="update()"></div></div>
+
+    <button class="btn-dl" onclick="window.print()">⬇️ Download as PDF</button>
+    <p style="font-size:11px; color:#999; text-align:center; margin-top:8px;">In the print dialog, select "Save as PDF" and A4 paper size</p>
+  </div>
+
+  <!-- PREVIEW PANEL -->
+  <div class="preview-panel" id="preview-panel">
+    <div class="preview-wrap">
+      <div class="preview-label">Live Preview · Click "Download as PDF" to save</div>
+      <div class="preview-page tpl-classic" id="preview-page">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEO SECTION (hidden on print) -->
+<div class="seo-section">
+  <h2>Free Marriage Biodata Maker — Complete Guide</h2>
+  <p>BiodataKit lets you create a professional marriage biodata in minutes. Fill in your details, choose from 3 templates, preview instantly, and download as PDF — completely free, no signup, no watermark.</p>
+
+  <h3>What is a marriage biodata?</h3>
+  <p>A marriage biodata (also called matrimonial biodata or marriage CV) is a one-page document shared with prospective matches and their families during the marriage search process in India. It contains personal details, family background, education, career, and expectations from a life partner. It is the first impression in arranged marriage introductions.</p>
+
+  <h3>What to include in a marriage biodata</h3>
+  <ul>
+    <li><strong>Personal details</strong>: Full name, date of birth, age, height, complexion, blood group, birthplace</li>
+    <li><strong>Religion & caste</strong>: Religion, caste, sub-caste, gotra, manglik status</li>
+    <li><strong>Education & career</strong>: Highest qualification, occupation, employer, annual income</li>
+    <li><strong>Family details</strong>: Parents' names and occupations, siblings</li>
+    <li><strong>Lifestyle</strong>: Diet (vegetarian/non-veg), hobbies, smoking/drinking habits</li>
+    <li><strong>Partner expectations</strong>: Preferred age range, other expectations</li>
+    <li><strong>Contact details</strong>: City, phone, email (of candidate or parent)</li>
+    <li><strong>Photo</strong>: A recent, clear photograph (recommended)</li>
+  </ul>
+
+  <h3>Tips for a good marriage biodata</h3>
+  <ul>
+    <li>Keep it to one page — families receive many biodatas; concise ones get read</li>
+    <li>Use a recent, natural-looking photograph (not too formal, not casual)</li>
+    <li>Be accurate and honest — family details will be verified</li>
+    <li>For partner expectations, be specific but not too restrictive</li>
+    <li>Include a parent or trusted relative's contact, not just yours</li>
+  </ul>
+
+  <details>
+    <summary>Is biodata different from a resume?</summary>
+    <p>A professional resume focuses on work experience and skills. A marriage biodata focuses on personal background, family details, and lifestyle — information relevant for a life partner. The two documents have completely different purposes and audiences. Some sections overlap (education, occupation) but the overall context is different.</p>
+  </details>
+  <details>
+    <summary>Does my data get saved anywhere?</summary>
+    <p>No. Everything you type stays in your browser only. BiodataKit does not send any data to a server. Your personal information (name, phone, family details) is never stored, shared, or transmitted. The PDF is generated directly in your browser.</p>
+  </details>
+  <details>
+    <summary>Can I use this biodata for Shaadi.com or Jeevansathi?</summary>
+    <p>This biodata is a PDF document designed for direct sharing — WhatsApp, email, printed handout. For online matrimonial sites like Shaadi.com, Jeevansathi, or BharatMatrimony, you need to create a profile on their platform directly. However, a well-made biodata PDF is often requested alongside the online profile when families are seriously interested.</p>
+  </details>
+
+  <div style="margin-top:20px; font-size:12px; color:#6a1b9a;">
+    More free tools: <a href="https://nxtcraft.github.io/resumekit/" style="color:#9c27b0;">ResumeKit</a> ·
+    <a href="https://nxtcraft.github.io/invoicekit/" style="color:#9c27b0;">InvoiceKit</a> ·
+    <a href="https://nxtcraft.github.io/" style="color:#9c27b0;">All NxtCraft Tools</a>
+  </div>
+</div>
+
+<footer style="text-align:center; padding:20px; font-size:12px; color:#9c27b0; border-top:1px solid #e1bee7;">
+  &copy; 2026 BiodataKit · <a href="https://nxtcraft.github.io/" style="color:#9c27b0;">NxtCraft Tools</a> · Free forever, no watermark
+</footer>
+
+<script>
+let currentTpl = 'classic';
+let photoData = '';
+
+function setTemplate(tpl) {
+  currentTpl = tpl;
+  document.querySelectorAll('.tpl-btn').forEach(b => b.classList.toggle('active', b.dataset.tpl === tpl));
+  update();
+}
+
+function handlePhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    photoData = e.target.result;
+    document.getElementById('photo-img').src = photoData;
+    document.getElementById('photo-img').style.display = 'block';
+    document.getElementById('photo-placeholder').style.display = 'none';
+    update();
+  };
+  reader.readAsDataURL(file);
+}
+
+function v(id) { return (document.getElementById(id).value || '').trim(); }
+
+function row(key, val) {
+  if (!val) return '';
+  return `<div class="bd-row"><span class="bd-key">${key}</span><span class="bd-val">${escH(val)}</span></div>`;
+}
+
+function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderClassic() {
+  const name = v('f_name') || 'Your Name';
+  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  return `
+  <div class="bd-header">
+    ${photo}
+    <div class="bd-name">${escH(name)}</div>
+    <div class="bd-subtitle">Marriage Biodata</div>
+  </div>
+  <div class="bd-body">
+    <div class="bd-section">
+      <div class="bd-section-title">Personal Details</div>
+      ${row('Date of Birth', v('f_dob'))}
+      ${row('Age', v('f_age'))}
+      ${row('Height', v('f_height'))}
+      ${row('Weight', v('f_weight'))}
+      ${row('Complexion', v('f_complexion'))}
+      ${row('Blood Group', v('f_blood'))}
+      ${row('Place of Birth', v('f_pob'))}
+      ${row('Native Place', v('f_native'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">Religion & Caste</div>
+      ${row('Religion', v('f_religion'))}
+      ${row('Caste', v('f_caste'))}
+      ${row('Gotra / Sub-caste', v('f_gotra'))}
+      ${row('Manglik', v('f_manglik'))}
+      <div class="bd-section-title" style="margin-top:12px;">Education & Career</div>
+      ${row('Qualification', v('f_edu'))}
+      ${row('Occupation', v('f_occ'))}
+      ${row('Employer', v('f_emp'))}
+      ${row('Annual Income', v('f_income'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">Family Details</div>
+      ${row("Father's Name", v('f_father'))}
+      ${row("Father's Occupation", v('f_focc'))}
+      ${row("Mother's Name", v('f_mother'))}
+      ${row("Mother's Occupation", v('f_mocc'))}
+      ${row('Siblings', v('f_siblings'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">Lifestyle</div>
+      ${row('Diet', v('f_diet'))}
+      ${row('Smoking / Drinking', v('f_habits'))}
+      ${row('Hobbies', v('f_hobbies'))}
+      <div class="bd-section-title" style="margin-top:12px;">Partner Expectations</div>
+      ${row('Preferred Age', v('f_page'))}
+      ${v('f_pref') ? `<div style="font-size:12px; color:#1a1a2e; margin-top:3px; line-height:1.5;">${escH(v('f_pref'))}</div>` : ''}
+    </div>
+    <div class="bd-section full">
+      <div class="bd-section-title">Contact</div>
+      ${row('City', v('f_city'))}
+      ${row('Contact', v('f_cname'))}
+      ${row('Phone', v('f_phone'))}
+      ${row('Email', v('f_email'))}
+    </div>
+  </div>
+  <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
+}
+
+function renderModern() {
+  const name = v('f_name') || 'Your Name';
+  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+  return `
+  <div class="bd-header">
+    ${photo}
+    <div class="bd-header-info">
+      <div class="bd-name">${escH(name)}</div>
+      <div class="bd-subtitle">Marriage Biodata${v('f_city') ? ' · ' + escH(v('f_city')) : ''}</div>
+    </div>
+  </div>
+  <div class="bd-body">
+    <div class="bd-section">
+      <div class="bd-section-title">👤 Personal</div>
+      ${row('Date of Birth', v('f_dob'))}
+      ${row('Age', v('f_age'))}
+      ${row('Height / Weight', [v('f_height'), v('f_weight')].filter(Boolean).join(' · ') || '')}
+      ${row('Complexion', v('f_complexion'))}
+      ${row('Blood Group', v('f_blood'))}
+      ${row('Native Place', v('f_native'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">🙏 Religion & Caste</div>
+      ${row('Religion', v('f_religion'))}
+      ${row('Caste', v('f_caste'))}
+      ${row('Gotra', v('f_gotra'))}
+      ${row('Manglik', v('f_manglik'))}
+      <div class="bd-section-title" style="margin-top:10px;">🍃 Lifestyle</div>
+      ${row('Diet', v('f_diet'))}
+      ${row('Habits', v('f_habits'))}
+      ${row('Hobbies', v('f_hobbies'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">🎓 Education & Career</div>
+      ${row('Qualification', v('f_edu'))}
+      ${row('Occupation', v('f_occ'))}
+      ${row('Employer', v('f_emp'))}
+      ${row('Income', v('f_income'))}
+    </div>
+    <div class="bd-section">
+      <div class="bd-section-title">👨‍👩‍👧 Family</div>
+      ${row('Father', v('f_father') + (v('f_focc') ? ' (' + v('f_focc') + ')' : ''))}
+      ${row('Mother', v('f_mother') + (v('f_mocc') ? ' (' + v('f_mocc') + ')' : ''))}
+      ${row('Siblings', v('f_siblings'))}
+    </div>
+    <div class="bd-section full">
+      <div class="bd-section-title">💑 Partner Expectations</div>
+      ${row('Age Range', v('f_page'))}
+      ${v('f_pref') ? `<div style="font-size:12px; color:#555; margin-top:3px; line-height:1.5;">${escH(v('f_pref'))}</div>` : ''}
+    </div>
+    <div class="bd-section full">
+      <div class="bd-section-title">📞 Contact</div>
+      ${row('Contact', v('f_cname'))} ${row('Phone', v('f_phone'))} ${row('Email', v('f_email'))}
+    </div>
+  </div>
+  <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
+}
+
+function renderSimple() {
+  const name = v('f_name') || 'Your Name';
+  const photo = photoData ? `<img class="bd-photo" src="${photoData}" alt="Photo">` : '<div class="bd-photo-placeholder">👤</div>';
+
+  function tRow(k, val) { return val ? `<tr><td>${k}</td><td>${escH(val)}</td></tr>` : ''; }
+
+  return `
+  <div class="bd-header">
+    ${photo}
+    <div class="bd-name">${escH(name)}</div>
+    <div class="bd-subtitle">Marriage Biodata</div>
+  </div>
+  <table>
+    <tr><th colspan="2">Personal Details</th></tr>
+    ${tRow('Date of Birth', v('f_dob'))}
+    ${tRow('Age', v('f_age'))}
+    ${tRow('Height', v('f_height'))}
+    ${tRow('Complexion', v('f_complexion'))}
+    ${tRow('Blood Group', v('f_blood'))}
+    ${tRow('Native Place', v('f_native'))}
+    <tr><th colspan="2">Religion & Caste</th></tr>
+    ${tRow('Religion', v('f_religion'))}
+    ${tRow('Caste', v('f_caste'))}
+    ${tRow('Gotra / Sub-caste', v('f_gotra'))}
+    ${tRow('Manglik Status', v('f_manglik'))}
+    <tr><th colspan="2">Education & Career</th></tr>
+    ${tRow('Qualification', v('f_edu'))}
+    ${tRow('Occupation', v('f_occ'))}
+    ${tRow('Employer', v('f_emp'))}
+    ${tRow('Annual Income', v('f_income'))}
+    <tr><th colspan="2">Family Details</th></tr>
+    ${tRow("Father's Name & Occupation", v('f_father') + (v('f_focc') ? ', ' + v('f_focc') : ''))}
+    ${tRow("Mother's Name & Occupation", v('f_mother') + (v('f_mocc') ? ', ' + v('f_mocc') : ''))}
+    ${tRow('Siblings', v('f_siblings'))}
+    <tr><th colspan="2">Lifestyle & Interests</th></tr>
+    ${tRow('Diet', v('f_diet'))}
+    ${tRow('Habits', v('f_habits'))}
+    ${tRow('Hobbies', v('f_hobbies'))}
+    ${tRow('Partner Age Range', v('f_page'))}
+    ${v('f_pref') ? `<tr><td>Expectations</td><td>${escH(v('f_pref'))}</td></tr>` : ''}
+    <tr><th colspan="2">Contact Details</th></tr>
+    ${tRow('City', v('f_city'))}
+    ${tRow('Contact Person', v('f_cname'))}
+    ${tRow('Phone', v('f_phone'))}
+    ${tRow('Email', v('f_email'))}
+  </table>
+  <div class="bd-footer">Prepared with BiodataKit · nxtcraft.github.io/biodatakit</div>`;
+}
+
+function update() {
+  const page = document.getElementById('preview-page');
+  page.className = 'preview-page tpl-' + currentTpl;
+  page.innerHTML = currentTpl === 'classic' ? renderClassic()
+    : currentTpl === 'modern' ? renderModern()
+    : renderSimple();
+}
+
+update();
+</script>
+</body>
+</html>
