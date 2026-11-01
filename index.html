@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marriage Biodata Maker — Free Biodata Format Generator | BiodataKit</title>
 <meta name="description" content="Create a professional marriage biodata free. Fill the form, preview instantly, download as PDF. Choose from 3 templates. No signup, no watermark.">
-<meta name="keywords" content="marriage biodata maker, biodata format for marriage, matrimonial biodata, biodata template free, marriage biodata pdf download, shaadi biodata format, hindu marriage biodata, biodata format in english, biodata kaise banaye, shadi ke liye biodata, biodata format word free download, marriage biodata format for boy, marriage biodata format for girl, biodatamaker online, biodata banana online free, marriage biodata sample, matrimonial profile format">
+<meta name="keywords" content="marriage biodata maker, biodata format for marriage, matrimonial biodata, biodata template free, marriage biodata pdf download, shaadi biodata format, hindu marriage biodata, biodata format in english, biodata kaise banaye, shadi ke liye biodata, biodata format word free download, marriage biodata format for boy, marriage biodata format for girl, biodatamaker online, biodata banana online free, marriage biodata sample, matrimonial profile format, kundali biodata format, rashi nakshatra biodata, horoscope biodata format marriage, biodata with kundali details free">
 <link rel="canonical" href="https://nxtcraft.github.io/biodatakit/">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#9c27b0">
@@ -277,6 +277,40 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
       </div>
     </div>
 
+    <div class="section-head">Horoscope / Kundali <span style="font-weight:400;font-size:11px;color:#999;">(optional)</span></div>
+    <div class="field-row">
+      <div class="field"><label>Rashi (Moon Sign)</label>
+        <select id="f_rashi" onchange="update()">
+          <option value="">Select Rashi</option>
+          <option>Mesh (Aries)</option><option>Vrishabh (Taurus)</option><option>Mithun (Gemini)</option>
+          <option>Kark (Cancer)</option><option>Simha (Leo)</option><option>Kanya (Virgo)</option>
+          <option>Tula (Libra)</option><option>Vrishchik (Scorpio)</option><option>Dhanu (Sagittarius)</option>
+          <option>Makar (Capricorn)</option><option>Kumbh (Aquarius)</option><option>Meen (Pisces)</option>
+        </select>
+      </div>
+      <div class="field"><label>Nakshatra (Birth Star)</label>
+        <select id="f_nakshatra" onchange="update()">
+          <option value="">Select Nakshatra</option>
+          <option>Ashwini</option><option>Bharani</option><option>Krittika</option><option>Rohini</option>
+          <option>Mrigashira</option><option>Ardra</option><option>Punarvasu</option><option>Pushya</option>
+          <option>Ashlesha</option><option>Magha</option><option>Purva Phalguni</option><option>Uttara Phalguni</option>
+          <option>Hasta</option><option>Chitra</option><option>Swati</option><option>Vishakha</option>
+          <option>Anuradha</option><option>Jyeshtha</option><option>Mula</option><option>Purva Ashadha</option>
+          <option>Uttara Ashadha</option><option>Shravana</option><option>Dhanishtha</option><option>Shatabhisha</option>
+          <option>Purva Bhadrapada</option><option>Uttara Bhadrapada</option><option>Revati</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Time of Birth</label><input type="text" id="f_tob" placeholder="e.g. 6:30 AM" oninput="update()"></div>
+      <div class="field"><label>Kundali Available</label>
+        <select id="f_kundali" onchange="update()">
+          <option value="">Select</option>
+          <option>Yes</option><option>No</option><option>Can be prepared</option>
+        </select>
+      </div>
+    </div>
+
     <div class="section-head">Education & Career</div>
     <div class="field-row full"><div class="field"><label>Highest Qualification</label><input type="text" id="f_edu" placeholder="e.g. B.Tech, Computer Science" oninput="update()"></div></div>
     <div class="field-row">
@@ -450,7 +484,7 @@ function setColor(c) {
 }
 
 // ── PERSISTENCE ──
-const BD_FIELDS = ['f_name','f_dob','f_age','f_height','f_weight','f_complexion','f_blood','f_pob','f_native','f_city','f_religion','f_caste','f_gotra','f_manglik','f_edu','f_occ','f_emp','f_income','f_father','f_focc','f_mother','f_mocc','f_siblings','f_diet','f_habits','f_hobbies','f_pref','f_phone','f_email','f_page','f_cname'];
+const BD_FIELDS = ['f_name','f_dob','f_age','f_height','f_weight','f_complexion','f_blood','f_pob','f_native','f_city','f_religion','f_caste','f_gotra','f_manglik','f_rashi','f_nakshatra','f_tob','f_kundali','f_edu','f_occ','f_emp','f_income','f_father','f_focc','f_mother','f_mocc','f_siblings','f_diet','f_habits','f_hobbies','f_pref','f_phone','f_email','f_page','f_cname'];
 
 let _bdSaveTimer;
 function bdAutosave() {
@@ -611,6 +645,11 @@ function renderClassic(showPhoto=true) {
       ${row('Caste', v('f_caste'))}
       ${row('Gotra / Sub-caste', v('f_gotra'))}
       ${row('Manglik', v('f_manglik'))}
+      ${v('f_rashi')||v('f_nakshatra')||v('f_tob') ? `<div class="bd-section-title" style="margin-top:12px;">Horoscope</div>` : ''}
+      ${row('Rashi', v('f_rashi'))}
+      ${row('Nakshatra', v('f_nakshatra'))}
+      ${row('Time of Birth', v('f_tob'))}
+      ${row('Kundali', v('f_kundali'))}
       <div class="bd-section-title" style="margin-top:12px;">Education & Career</div>
       ${row('Qualification', v('f_edu'))}
       ${row('Occupation', v('f_occ'))}
@@ -673,6 +712,10 @@ function renderModern(showPhoto=true) {
       ${row('Caste', v('f_caste'))}
       ${row('Gotra', v('f_gotra'))}
       ${row('Manglik', v('f_manglik'))}
+      ${v('f_rashi') ? row('Rashi', v('f_rashi')) : ''}
+      ${v('f_nakshatra') ? row('Nakshatra', v('f_nakshatra')) : ''}
+      ${v('f_tob') ? row('Time of Birth', v('f_tob')) : ''}
+      ${v('f_kundali') ? row('Kundali', v('f_kundali')) : ''}
       <div class="bd-section-title" style="margin-top:10px;">🍃 Lifestyle</div>
       ${row('Diet', v('f_diet'))}
       ${row('Habits', v('f_habits'))}
@@ -731,6 +774,11 @@ function renderSimple(showPhoto=true) {
     ${tRow('Caste', v('f_caste'))}
     ${tRow('Gotra / Sub-caste', v('f_gotra'))}
     ${tRow('Manglik Status', v('f_manglik'))}
+    ${v('f_rashi')||v('f_nakshatra') ? '<tr><th colspan="2">Horoscope Details</th></tr>' : ''}
+    ${tRow('Rashi (Moon Sign)', v('f_rashi'))}
+    ${tRow('Nakshatra', v('f_nakshatra'))}
+    ${tRow('Time of Birth', v('f_tob'))}
+    ${tRow('Kundali Available', v('f_kundali'))}
     <tr><th colspan="2">Education & Career</th></tr>
     ${tRow('Qualification', v('f_edu'))}
     ${tRow('Occupation', v('f_occ'))}
