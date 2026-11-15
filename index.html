@@ -185,6 +185,7 @@ details p { padding: 0 14px 12px; font-size: 13px; color: #555; line-height: 1.7
 </style>
 
 <link rel="stylesheet" id="nc-dark" href="/assets/nc-dark.css">
+<script>function ncEsc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}</script>
 </head>
 <body>
 <div class="site-header">
@@ -530,7 +531,7 @@ function bdLoadDraft() {
         div.className = 'field-row';
         div.id = 'cf-row-' + idx;
         div.style.cssText = 'display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:8px; align-items:end;';
-        div.innerHTML = `<div class="field"><label>Label</label><input type="text" placeholder="e.g. Languages Known" value="${cf.label||''}" oninput="updateCF(${idx},'label',this.value)"></div><div class="field"><label>Value</label><input type="text" placeholder="e.g. Hindi, English" value="${cf.value||''}" oninput="updateCF(${idx},'value',this.value)"></div><button onclick="removeCF(${idx})" style="padding:7px 10px; background:#fff; border:1px solid #ddd; border-radius:7px; cursor:pointer; font-size:14px; margin-bottom:1px;">🗑</button>`;
+        div.innerHTML = `<div class="field"><label>Label</label><input type="text" placeholder="e.g. Languages Known" value="${ncEsc(cf.label)}" oninput="updateCF(${idx},'label',this.value)"></div><div class="field"><label>Value</label><input type="text" placeholder="e.g. Hindi, English" value="${ncEsc(cf.value)}" oninput="updateCF(${idx},'value',this.value)"></div><button onclick="removeCF(${idx})" style="padding:7px 10px; background:#fff; border:1px solid #ddd; border-radius:7px; cursor:pointer; font-size:14px; margin-bottom:1px;">🗑</button>`;
         list.appendChild(div);
       });
     }
@@ -618,7 +619,7 @@ function v(id) { return (document.getElementById(id).value || '').trim(); }
 
 function row(key, val) {
   if (!val) return '';
-  return `<div class="bd-row"><span class="bd-key">${key}</span><span class="bd-val">${escH(val)}</span></div>`;
+  return `<div class="bd-row"><span class="bd-key">${escH(key)}</span><span class="bd-val">${escH(val)}</span></div>`;
 }
 
 function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
